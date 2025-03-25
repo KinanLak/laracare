@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Unite extends Model
 {
@@ -54,6 +55,7 @@ class Unite extends Model
         'batiment',
         'localization',
         'equipements',
+        'hopital_id'
     ];
 
     /**
@@ -71,5 +73,13 @@ class Unite extends Model
     {
         return $this->belongsToMany(Admission::class, 'admission_unite', 'unite_code', 'admission_id')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the hopital that owns the unite.
+     */
+    public function hopital(): BelongsTo
+    {
+        return $this->belongsTo(Hopital::class, 'hopital_id', 'id');
     }
 }

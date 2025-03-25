@@ -20,32 +20,41 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-
         User::factory()->createOneQuietly([
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => bcrypt('password')
         ]);
-        
 
         // Create 5 hospitals
         $hopitals = Hopital::factory(5)->create();
 
-        // Create 20 doctors, assigned to random hospitals
+        // Create personnes for doctors first
+        $medecinPersonnes = Personne::factory(20)->create();
+        
+        // Create 20 doctors (4 per hospital), using existing personnes
+        $medecins = [];
+        $personneIndex = 0;
         foreach ($hopitals as $hopital) {
-            Medecin::factory(4)->create([
-                'hopital_id' => $hopital->id
-            ]);
+            for ($i = 0; $i < 4; $i++) {
+                $medecins[] = Medecin::factory()->create([
+                    'hopital_id' => $hopital->id,
+                    'dni' => $medecinPersonnes[$personneIndex++]->dni
+                ]);
+            }
         }
 
-        // Create 10 unités (units)
-        $unites = Unite::factory(10)->create();
+        // Create 10 unités (units), assigned to random hospitals
+        $unites = [];
+        foreach ($hopitals as $hopital) {
+            $unites = array_merge($unites, Unite::factory(2)->create([
+                'hopital_id' => $hopital->id
+            ])->all());
+        }
 
         // For each unit, create 3-8 chambres (rooms)
         foreach ($unites as $unite) {
-            $chambres = Chambre::factory(rand(3, 8))->create([
+            Chambre::factory(rand(3, 8))->create([
                 'unite_code' => $unite->code
             ]);
         }
@@ -59,12 +68,14 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        // Create 100 random admissions
-        $admissions = Admission::factory(100)->create([
-            'patientid' => function () use ($patients) {
-                return $patients[array_rand($patients)]->patientid;
-            }
-        ]);
+        // Create 100 random admissions with random doctors
+        $admissions = [];
+        for ($i = 0; $i < 100; $i++) {
+            $admissions[] = Admission::factory()->create([
+                'patientid' => $patients[array_rand($patients)]->patientid,
+                'medecinId' => $medecins[array_rand($medecins)]->hasld
+            ]);
+        }
 
         // Assign random rooms and units to admissions
         $chambres = Chambre::all();

@@ -41,6 +41,7 @@ class UniteFactory extends Factory
             'batiment' => $this->faker->randomElement(['A', 'B', 'C', 'D']) . $this->faker->numberBetween(1, 5),
             'localization' => $this->faker->randomElement(['Aile Est', 'Aile Ouest', 'Aile Nord', 'Aile Sud']),
             'equipements' => $this->faker->optional(0.7)->paragraph(),
+            'hopital_id' => \App\Models\Hopital::factory(),
         ];
     }
 }

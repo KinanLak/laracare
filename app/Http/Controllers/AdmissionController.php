@@ -6,6 +6,7 @@ use App\Models\Admission;
 use App\Models\Patient;
 use App\Models\Unite;
 use App\Models\Chambre;
+use App\Models\Medecin;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -30,11 +31,13 @@ class AdmissionController extends Controller
         $patients = Patient::with('personne')->get();
         $unites = Unite::all();
         $chambres = Chambre::all();
+        $medecins = Medecin::with('personne')->get();
 
         return Inertia::render('Admission/Create', [
             'patients' => $patients,
             'unites' => $unites,
-            'chambres' => $chambres
+            'chambres' => $chambres,
+            'medecins' => $medecins
         ]);
     }
 
@@ -55,6 +58,7 @@ class AdmissionController extends Controller
             'patientid' => 'required|string|exists:patients,patientid',
             'unites' => 'nullable|array',
             'chambres' => 'nullable|array',
+            'medecinId' => 'required|string|exists:medecins,hasld',
         ]);
 
         $admission = Admission::create([
@@ -67,6 +71,7 @@ class AdmissionController extends Controller
             'insurance' => $validated['insurance'],
             'commentaires' => $validated['commentaires'],
             'patientid' => $validated['patientid'],
+            'medecinId' => $validated['medecinId'],
         ]);
 
         if (isset($validated['unites'])) {
@@ -87,7 +92,7 @@ class AdmissionController extends Controller
     public function show(Admission $admission)
     {
         return Inertia::render('Admission/Show', [
-            'admission' => $admission->load(['patient.personne', 'unites', 'chambres'])
+            'admission' => $admission->load(['patient.personne', 'unites', 'chambres', 'medecin.personne'])
         ]);
     }
 

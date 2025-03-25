@@ -4,7 +4,9 @@ namespace Database\Factories;
 
 use App\Models\Medecin;
 use App\Models\Hopital;
+use App\Models\Personne;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class MedecinFactory extends Factory
 {
@@ -22,20 +24,15 @@ class MedecinFactory extends Factory
      */
     public function definition(): array
     {
+        $personne = Personne::factory()->create();
+
         return [
-            'hasld' => 'MED' . $this->faker->unique()->numerify('######'),
-            'status' => $this->faker->randomElement(['Actif', 'Inactif', 'En congé']),
-            'contrat' => $this->faker->randomElement(['CDI', 'CDD', 'Contractuel', 'Consultant']),
-            'licence_medicale' => $this->faker->unique()->bothify('LM-#####??'),
-            'specialite' => $this->faker->randomElement([
-                'Cardiologie',
-                'Dermatologie',
-                'Gastro-entérologie',
-                'Neurologie',
-                'Pédiatrie',
-                'Psychiatrie',
-                'Radiologie'
-            ]),
+            'hasld' => Str::uuid(),
+            'status' => $this->faker->randomElement(['actif', 'inactif']),
+            'contrat' => $this->faker->randomElement(['CDI', 'CDD', 'Vacation']),
+            'licence_medicale' => $this->faker->unique()->numerify('LM########'),
+            'specialite' => $this->faker->randomElement(['Cardiologie', 'Neurologie', 'Pédiatrie']),
+            'dni' => $personne->dni,
             'hopital_id' => function () {
                 return Hopital::factory()->create()->id;
             },

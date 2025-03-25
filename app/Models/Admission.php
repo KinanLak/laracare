@@ -55,6 +55,7 @@ class Admission extends Model
         'insurance',
         'commentaires',
         'patientid',
+        'medecinId'
     ];
 
     /**
@@ -81,5 +82,13 @@ class Admission extends Model
     {
         return $this->belongsToMany(Unite::class, 'admission_unite', 'admission_id', 'unite_code')
             ->withTimestamps();
+    }
+
+    /**
+     * Get the medecin that owns the admission.
+     */
+    public function medecin(): BelongsTo
+    {
+        return $this->belongsTo(Medecin::class, 'medecinId', 'hasld');
     }
 }
