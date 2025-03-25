@@ -66,7 +66,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
+                            <Link href="/" prefetch>
                                 <Hospital className="w-16 h-16 ml-2.5 text-blue-600 dark:text-blue-400" strokeWidth={2.0} />
                                 <h1 className='font-bold text-blue-600 dark:text-blue-400'>Laracare</h1>
                             </Link>

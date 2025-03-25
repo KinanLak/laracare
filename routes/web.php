@@ -41,22 +41,51 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
     Route::get('Hopital', function () {
-        return Inertia::render('Hopital');
+        return Inertia::render('Hopital',
+        [
+            'hopitals' => Hopital::all(),
+        ],
+    );
     })->name('Hopital');
+
     Route::get('Admission', function () {
-        return Inertia::render('Admission');
+        return Inertia::render('Admission',
+        [
+            'admissions' => Admission::all(),
+        ],
+    );
     })->name('Admission');
+
     Route::get('Chambre', function () {
-        return Inertia::render('Chambre');
+        return Inertia::render('Chambre',
+        [
+            'chambres' => Chambre::all(),
+        ],
+    );
     })->name('Chambre');
+
     Route::get('Medecin', function () {
-        return Inertia::render('Medecin');
+        return Inertia::render('Medecin',
+        [
+            'medecins' => Medecin::all(),
+        ],
+    );
     })->name('Medecin');
+
     Route::get('Patient', function () {
-        return Inertia::render('Patient');
+        return Inertia::render('Patient',
+        [
+            'patients' => Patient::all(),
+        ],
+    );
     })->name('Patient');
+
     Route::get('Unite', function () {
-        return Inertia::render('Unite');
+        return Inertia::render('Unite',
+        [
+            'unites' => Unite::all(),
+        ],
+    );
     })->name('Unite');
 });
 

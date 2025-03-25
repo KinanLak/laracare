@@ -1,14 +1,13 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
-
-import { _Hopital } from '@/lib/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { Hospital, Eye, Pencil, Trash2, Plus } from 'lucide-react';
+import { type _Hopital } from '@/lib/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Hopital',
-        href: '/Hopital',
+        title: 'Hôpitaux',
+        href: '/hopitaux',
     },
 ];
 
@@ -16,29 +15,94 @@ interface HopitalProps extends Record<string, unknown> {
     hopitals: _Hopital[];
 }
 
-export default function Hopital() {
-
+export default function Hopitaux() {
     const { hopitals } = usePage<HopitalProps>().props;
-    console.log(hopitals);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Hopital" />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
+            <Head title="Liste des Hôpitaux" />
+
+            <div className="container mx-auto px-4 py-8">
+                <div className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                        <Hospital className="w-8 h-8 text-blue-600" />
+                        Nos Hôpitaux
+                    </h1>
+                    <Link
+                        href={"#"}
+                        className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                        <Plus className="w-5 h-5" />
+                        Ajouter un hôpital
+                    </Link>
                 </div>
-                <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
+
+                <div className="grid grid-cols-1 gap-6">
+                    {hopitals.map((hopital) => (
+                        <div
+                            key={hopital.id}
+                            className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
+                        >
+                            <div className="p-6">
+                                <div className="flex justify-between items-start mb-4">
+                                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                        {hopital.nom}
+                                    </h2>
+                                    <div className="flex gap-2">
+                                        <Link
+                                            href={"#"}
+                                            className="text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors"
+                                        >
+                                            <Eye className="w-5 h-5" />
+                                        </Link>
+                                        <Link
+                                            href={"#"}
+                                            className="text-green-600 hover:bg-green-50 p-2 rounded-full transition-colors"
+                                        >
+                                            <Pencil className="w-5 h-5" />
+                                        </Link>
+                                        <Link
+                                            href={"#"}
+                                            method="delete"
+                                            as="button"
+                                            className="text-red-600 hover:bg-red-50 p-2 rounded-full transition-colors"
+                                            data-confirm="Êtes-vous sûr de vouloir supprimer cet hôpital ?"
+                                        >
+                                            <Trash2 className="w-5 h-5" />
+                                        </Link>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <p>
+                                        <span className="font-medium text-gray-800 dark:text-gray-200">Adresse :</span> {hopital.adresse}
+                                    </p>
+                                    <p>
+                                        <span className="font-medium text-gray-800 dark:text-gray-200">Ville :</span> {hopital.ville}
+                                    </p>
+                                    <p>
+                                        <span className="font-medium text-gray-800 dark:text-gray-200">Téléphone :</span> {hopital.telephone}
+                                    </p>
+                                    <p>
+                                        <span className="font-medium text-gray-800 dark:text-gray-200">Email :</span> {hopital.email}
+                                    </p>
+                                    <p>
+                                        <span className="font-medium text-gray-800 dark:text-gray-200">Directeur :</span> {hopital.directeur}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
+
+                {hopitals.length === 0 && (
+                    <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                        <Hospital className="mx-auto w-16 h-16 text-gray-400 dark:text-gray-600 mb-4" />
+                        <p className="text-gray-600 dark:text-gray-400">
+                            Aucun hôpital n'a été ajouté pour le moment.
+                        </p>
+                    </div>
+                )}
             </div>
         </AppLayout>
     );
