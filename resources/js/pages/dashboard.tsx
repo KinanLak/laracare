@@ -1,4 +1,3 @@
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, usePage, Link } from '@inertiajs/react';
@@ -66,7 +65,6 @@ export default function Dashboard() {
                                 key={index}
                                 className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border flex items-center justify-center bg-white dark:bg-gray-800 hover:scale-105 transition-transform duration-200"
                             >
-                                <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900 dark:stroke-20" />
                                 <div className="relative text-center">
                                     <h2 className="text-3xl font-semibold text-gray-900 dark:text-white">{stat.label}</h2>
                                     <p className="text-5xl font-bold text-primary">{stat.count}</p>
