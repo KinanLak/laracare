@@ -10,7 +10,16 @@ use App\Http\Controllers\ChambreController;
 use App\Http\Controllers\AdmissionController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+
+use App\Models\Admission;
+use App\Models\Hopital;
+use App\Models\Chambre;
+use App\Models\Medecin;
+use App\Models\Patient;
+use App\Models\Unite;
+
 use Inertia\Inertia;
+
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -18,8 +27,19 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
+        return Inertia::render('dashboard',
+        [
+            'admissions' => Admission::all(),
+            'chambres' => Chambre::all(),
+            'hopitals' => Hopital::all(),
+            'medecins' => Medecin::all(),
+            'patients' => Patient::all(),
+            'unites' => Unite::all(),
+        ],
+    );
     })->name('dashboard');
+
+
     Route::get('Hopital', function () {
         return Inertia::render('Hopital');
     })->name('Hopital');

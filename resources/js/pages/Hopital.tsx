@@ -1,7 +1,9 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
+
+import { _Hopital } from '@/lib/types';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -10,8 +12,14 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
+interface HopitalProps extends Record<string, unknown> {
+    hopitals: _Hopital[];
+}
+
 export default function Hopital() {
 
+    const { hopitals } = usePage<HopitalProps>().props;
+    console.log(hopitals);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
