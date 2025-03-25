@@ -22,3 +22,7 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+*.zip
+.DS_Store
+Thumbs.db
+todo.md
