@@ -16,6 +16,7 @@ interface HopitalProps extends Record<string, unknown> {
 }
 
 export default function Hopitaux() {
+
     const { hopitals } = usePage<HopitalProps>().props;
 
     return (
