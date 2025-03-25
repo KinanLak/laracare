@@ -20,6 +20,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+    Route::get('Hopital', function () {
+        return Inertia::render('Hopital');
+    })->name('Hopital');
+    Route::get('Admission', function () {
+        return Inertia::render('Admission');
+    })->name('Admission');
+    Route::get('Chambre', function () {
+        return Inertia::render('Chambre');
+    })->name('Chambre');
+    Route::get('Medecin', function () {
+        return Inertia::render('Medecin');
+    })->name('Medecin');
+    Route::get('Patient', function () {
+        return Inertia::render('Patient');
+    })->name('Patient');
+    Route::get('Unite', function () {
+        return Inertia::render('Unite');
+    })->name('Unite');
 });
 
 Route::middleware('auth')->group(function () {
