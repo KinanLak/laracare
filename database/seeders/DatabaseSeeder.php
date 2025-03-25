@@ -22,12 +22,13 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        /* *
+
         User::factory()->createOneQuietly([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'password' => bcrypt('password')
         ]);
-        */
+        
 
         // Create 5 hospitals
         $hopitals = Hopital::factory(5)->create();
