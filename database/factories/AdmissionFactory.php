@@ -38,6 +38,9 @@ class AdmissionFactory extends Factory
             'patientid' => function () {
                 return Patient::factory()->create()->patientid;
             },
+            'medecinId' => function () {
+                return \App\Models\Medecin::factory()->create()->hasld;
+            },
         ];
     }
 }

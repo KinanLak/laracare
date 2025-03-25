@@ -111,9 +111,12 @@ Route::middleware('auth')->group(function () {
     // Admission routes
     Route::resource('admissions', AdmissionController::class);
 
-    // API routes for Unite-related data
-    Route::get('/api/chambres/by-unite/{code}', [ChambreController::class, 'getByUniteCode'])->name('api.chambres.by-unite');
-    Route::get('/api/admissions/by-unite/{code}', [AdmissionController::class, 'getByUniteCode'])->name('api.admissions.by-unite');
+    // API routes for unites
+    Route::get('/api/chambres/unites/{code}/details', [ChambreController::class, 'getByUniteCode'])->name('api.chambres.by-unite');
+    Route::get('/api/admissions/unites/{code}/details', [AdmissionController::class, 'getByUniteCode'])->name('api.admissions.by-unite');
+
+    // API routes for chambres
+    //Route::get('/api/admissions/chambres/{id}/details', [AdmissionController::class, 'getByChambreId'])->name('api.admissions.by-chambre');
 });
 
 require __DIR__ . '/settings.php';

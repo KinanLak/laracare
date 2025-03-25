@@ -14,7 +14,7 @@ class MedecinController extends Controller
      */
     public function index()
     {
-        $medecins = Medecin::with('hopital')->get();
+        $medecins = Medecin::with(['hopital', 'personne'])->get();
         return Inertia::render('Medecin/Index', [
             'medecins' => $medecins
         ]);
@@ -43,6 +43,7 @@ class MedecinController extends Controller
             'licence_medicale' => 'required|string|max:255',
             'specialite' => 'required|string|max:255',
             'hopital_id' => 'required|string|exists:hopitals,id',
+            'dni' => 'required|string|exists:personnes,dni|unique:medecins',
         ]);
 
         Medecin::create($validated);
@@ -57,7 +58,7 @@ class MedecinController extends Controller
     public function show(Medecin $medecin)
     {
         return Inertia::render('Medecin/Show', [
-            'medecin' => $medecin->load('hopital')
+            'medecin' => $medecin->load(['hopital', 'personne', 'admissions'])
         ]);
     }
 

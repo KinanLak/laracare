@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Unite;
+use App\Models\Hopital;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +14,7 @@ class UniteController extends Controller
      */
     public function index()
     {
-        $unites = Unite::all();
+        $unites = Unite::with('hopital')->get();
         return Inertia::render('Unite/Index', [
             'unites' => $unites
         ]);
@@ -24,7 +25,10 @@ class UniteController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Unite/Create');
+        $hopitals = Hopital::all();
+        return Inertia::render('Unite/Create', [
+            'hopitals' => $hopitals
+        ]);
     }
 
     /**
@@ -41,6 +45,7 @@ class UniteController extends Controller
             'batiment' => 'required|string|max:255',
             'localization' => 'required|string|max:255',
             'equipements' => 'nullable|string',
+            'hopital_id' => 'required|string|exists:hopitals,id',
         ]);
 
         Unite::create($validated);
@@ -55,7 +60,7 @@ class UniteController extends Controller
     public function show(Unite $unite)
     {
         return Inertia::render('Unite/Show', [
-            'unite' => $unite->load(['chambres', 'admissions'])
+            'unite' => $unite->load(['chambres', 'admissions', 'hopital'])
         ]);
     }
 
