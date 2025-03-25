@@ -3,6 +3,7 @@ import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { ClipboardList, Eye, Pencil, Trash2, Plus } from 'lucide-react';
 import { type _Unite } from '@/lib/types';
+import { useQuery } from '@tanstack/react-query';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -17,6 +18,11 @@ interface UniteProps extends Record<string, unknown> {
 
 export default function Unites() {
     const { unites } = usePage<UniteProps>().props;
+
+    const fetchUniteData = async (uniteCode: string) => {
+        const response = await fetch(`/api/unites/${uniteCode}/details`);
+        return response.json();
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -38,64 +44,107 @@ export default function Unites() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-6">
-                    {unites.map((unite) => (
-                        <div
-                            key={unite.code}
-                            className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
-                        >
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-4">
-                                    <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                                        {unite.nom}
-                                    </h2>
-                                    <div className="flex gap-2">
-                                        <Link
-                                            href={"#"}
-                                            className="text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors"
-                                        >
-                                            <Eye className="w-5 h-5" />
-                                        </Link>
-                                        <Link
-                                            href={"#"}
-                                            className="text-green-600 hover:bg-green-50 p-2 rounded-full transition-colors"
-                                        >
-                                            <Pencil className="w-5 h-5" />
-                                        </Link>
-                                        <Link
-                                            href={"#"}
-                                            method="delete"
-                                            as="button"
-                                            className="text-red-600 hover:bg-red-50 p-2 rounded-full transition-colors"
-                                            data-confirm="Êtes-vous sûr de vouloir supprimer cette unité ?"
-                                        >
-                                            <Trash2 className="w-5 h-5" />
-                                        </Link>
+                    {unites.map((unite) => {
+                        const { data: uniteDetails, isLoading } = useQuery({
+                            queryKey: ['unite', unite.code],
+                            queryFn: () => fetchUniteData(unite.code),
+                        });
+
+                        return (
+                            <div
+                                key={unite.code}
+                                className="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all"
+                            >
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+                                            {unite.nom}
+                                        </h2>
+                                        <div className="flex gap-2">
+                                            <Link
+                                                href={"#"}
+                                                className="text-blue-600 hover:bg-blue-50 p-2 rounded-full transition-colors"
+                                            >
+                                                <Eye className="w-5 h-5" />
+                                            </Link>
+                                            <Link
+                                                href={"#"}
+                                                className="text-green-600 hover:bg-green-50 p-2 rounded-full transition-colors"
+                                            >
+                                                <Pencil className="w-5 h-5" />
+                                            </Link>
+                                            <Link
+                                                href={"#"}
+                                                method="delete"
+                                                as="button"
+                                                className="text-red-600 hover:bg-red-50 p-2 rounded-full transition-colors"
+                                                data-confirm="Êtes-vous sûr de vouloir supprimer cette unité ?"
+                                            >
+                                                <Trash2 className="w-5 h-5" />
+                                            </Link>
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                        <p>
+                                            <span className="font-medium text-gray-800 dark:text-gray-200">Responsable :</span> {unite.responsable}
+                                        </p>
+                                        <p>
+                                            <span className="font-medium text-gray-800 dark:text-gray-200">Spécialité :</span> {unite.specialite}
+                                        </p>
+                                        <p>
+                                            <span className="font-medium text-gray-800 dark:text-gray-200">Capacité :</span> {unite.capacite} lits
+                                        </p>
+                                        <p>
+                                            <span className="font-medium text-gray-800 dark:text-gray-200">Bâtiment :</span> {unite.batiment}
+                                        </p>
+                                        <p>
+                                            <span className="font-medium text-gray-800 dark:text-gray-200">Localisation :</span> {unite.localization}
+                                        </p>
+                                        <p>
+                                            <span className="font-medium text-gray-800 dark:text-gray-200">Équipements :</span> {unite.equipements}
+                                        </p>
                                     </div>
                                 </div>
 
-                                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                                    <p>
-                                        <span className="font-medium text-gray-800 dark:text-gray-200">Responsable :</span> {unite.responsable}
-                                    </p>
-                                    <p>
-                                        <span className="font-medium text-gray-800 dark:text-gray-200">Spécialité :</span> {unite.specialite}
-                                    </p>
-                                    <p>
-                                        <span className="font-medium text-gray-800 dark:text-gray-200">Capacité :</span> {unite.capacite} lits
-                                    </p>
-                                    <p>
-                                        <span className="font-medium text-gray-800 dark:text-gray-200">Bâtiment :</span> {unite.batiment}
-                                    </p>
-                                    <p>
-                                        <span className="font-medium text-gray-800 dark:text-gray-200">Localisation :</span> {unite.localization}
-                                    </p>
-                                    <p>
-                                        <span className="font-medium text-gray-800 dark:text-gray-200">Équipements :</span> {unite.equipements}
-                                    </p>
+                                {/* Affichage dynamique des chambres */}
+                                <div className="border-t border-gray-200 dark:border-gray-700 p-4">
+                                    <h3 className="text-lg font-semibold mb-4">Chambres</h3>
+                                    {isLoading ? (
+                                        <div className="animate-pulse">Chargement des chambres...</div>
+                                    ) : (
+                                        <div className="grid gap-4">
+                                            {uniteDetails?.chambres.map((chambre: any) => (
+                                                <div key={chambre.id} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                                    {/* Détails de la chambre */}
+                                                    <p>Chambre {chambre.nombre}</p>
+                                                    <p>Capacité: {chambre.capacite} lits</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Affichage dynamique des admissions */}
+                                <div className="border-t border-gray-200 dark:border-gray-700 p-4">
+                                    <h3 className="text-lg font-semibold mb-4">Admissions récentes</h3>
+                                    {isLoading ? (
+                                        <div className="animate-pulse">Chargement des admissions...</div>
+                                    ) : (
+                                        <div className="grid gap-4">
+                                            {uniteDetails?.admissions.map((admission: any) => (
+                                                <div key={admission.id} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                                    {/* Détails de l'admission */}
+                                                    <p>Patient: {admission.patientid}</p>
+                                                    <p>Date: {admission.date}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {unites.length === 0 && (
