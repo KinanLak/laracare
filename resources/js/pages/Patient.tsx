@@ -3,7 +3,7 @@ import { _Admission, type _Patient } from '@/lib/types';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useQuery } from '@tanstack/react-query';
-import { ClipboardList, ChevronDown, ChevronUp, Plus, Trash2, Pencil } from 'lucide-react';
+import { ChevronDown, ChevronUp, ClipboardList, Pencil, Plus, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -23,11 +23,6 @@ export default function Patients() {
 
     const fetchPatientDetails = async (patientId: string) => {
         const response = await fetch(`/api/patients/${patientId}/details`);
-        return response.json();
-    };
-
-    const fetchPatientData = async (dni: string) => {
-        const response = await fetch(`/api/personnes/${dni}/details`);
         return response.json();
     };
 
@@ -58,39 +53,24 @@ export default function Patients() {
                     {patients.map((patient) => {
                         const isExpanded = expandedPatient === patient.patientid;
 
-                        const { data: patientDetails, isLoading: isLoadingPatientDetails } = useQuery({
+                        const { data: patientDetails, isLoading } = useQuery({
                             queryKey: ['patient', patient.patientid],
                             queryFn: () => fetchPatientDetails(patient.patientid),
-                            enabled: isExpanded,
-                        });
-
-                        const { data: patientData, isLoading: isLoadingPatientData } = useQuery({
-                            queryKey: ['patient', patient.dni],
-                            queryFn: () => fetchPatientData(patient.dni),
                             enabled: isExpanded,
                         });
 
                         return (
                             <div
                                 key={patient.patientid}
-                                className={`
-                                    overflow-hidden rounded-xl border border-gray-200 bg-white
-                                    shadow-lg transition-all duration-300 ease-in-out
-                                    dark:border-gray-700 dark:bg-gray-800
-                                    ${isExpanded ? 'shadow-xl' : ''}
-                                `}
+                                className={`overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-300 ease-in-out dark:border-gray-700 dark:bg-gray-800 ${isExpanded ? 'shadow-xl' : ''} `}
                             >
                                 <div
-                                    className="p-6 flex items-center justify-between cursor-pointer hover:bg-gray-50/50 dark:hover:bg-gray-700/50"
+                                    className="flex cursor-pointer items-center justify-between p-6 hover:bg-gray-50/50 dark:hover:bg-gray-700/50"
                                     onClick={() => togglePatientExpansion(patient.patientid)}
                                 >
                                     <div>
-                                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                                            Patient ID: {patient.patientid}
-                                        </h2>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                                            DNI: {patient.dni}
-                                        </p>
+                                        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Patient {patient.patientid}</h2>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">{patient.dni}</p>
                                     </div>
 
                                     <div className="flex items-center gap-2">
@@ -98,12 +78,7 @@ export default function Patients() {
                                             <Link
                                                 href={'#'}
                                                 onClick={(e) => e.stopPropagation()}
-                                                className="
-                                                    rounded-full p-2 text-green-600
-                                                    transition-all duration-300 ease-in-out
-                                                    hover:bg-green-50 hover:scale-110
-                                                    active:scale-95
-                                                "
+                                                className="rounded-full p-2 text-green-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-green-50 active:scale-95"
                                             >
                                                 <Pencil className="h-5 w-5" />
                                             </Link>
@@ -112,12 +87,7 @@ export default function Patients() {
                                                 method="delete"
                                                 as="button"
                                                 onClick={(e) => e.stopPropagation()}
-                                                className="
-                                                    rounded-full p-2 text-red-600
-                                                    transition-all duration-300 ease-in-out
-                                                    hover:bg-red-50 hover:scale-110
-                                                    active:scale-95
-                                                "
+                                                className="rounded-full p-2 text-red-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-50 active:scale-95"
                                                 data-confirm="Êtes-vous sûr de vouloir supprimer ce patient ?"
                                             >
                                                 <Trash2 className="h-5 w-5" />
@@ -129,12 +99,7 @@ export default function Patients() {
                                                 e.stopPropagation();
                                                 togglePatientExpansion(patient.patientid);
                                             }}
-                                            className="
-                                                text-gray-500 hover:text-gray-700
-                                                hover:bg-gray-100 rounded-full p-1
-                                                transition-all duration-300 ease-in-out
-                                                cursor-pointer
-                                            "
+                                            className="cursor-pointer rounded-full p-1 text-gray-500 transition-all duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700"
                                         >
                                             {isExpanded ? <ChevronUp /> : <ChevronDown />}
                                         </div>
@@ -144,16 +109,18 @@ export default function Patients() {
                                 {isExpanded && (
                                     <>
                                         {/* Détails supplémentaires du patient */}
-                                        <div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-300 px-6 pb-4">
+                                        <div className="mt-4 space-y-2 px-6 pb-4 text-sm text-gray-600 dark:text-gray-300">
                                             <p>
-                                                <span className="font-medium text-gray-800 dark:text-gray-200">Nom complet :</span> {isLoadingPatientData ? "Chargement.." : `${patientData?.nom} ${patientData?.prenom}`}
-
+                                                <span className="font-medium text-gray-800 dark:text-gray-200">Nom complet :</span>{' '}
+                                                {isLoading ? 'Chargement..' : `${patientDetails?.nom} ${patientDetails?.prenom}`}
                                             </p>
                                             <p>
-                                                <span className="font-medium text-gray-800 dark:text-gray-200">Date de naissance :</span> {isLoadingPatientData ? "Chargement.." : `${patientData?.date_naissance}`}
+                                                <span className="font-medium text-gray-800 dark:text-gray-200">Date de naissance :</span>{' '}
+                                                {isLoading ? 'Chargement..' : patientDetails?.date_naissance}
                                             </p>
                                             <p>
-                                                <span className="font-medium text-gray-800 dark:text-gray-200">Âge :</span> {isLoadingPatientData ? "Chargement.." : `${patientData?.age}`}
+                                                <span className="font-medium text-gray-800 dark:text-gray-200">Âge :</span>{' '}
+                                                {isLoading ? 'Chargement..' : patientDetails?.age}
                                             </p>
                                         </div>
 
@@ -162,17 +129,14 @@ export default function Patients() {
                                             <div className="px-6 pt-4 pb-2">
                                                 <h3 className="text-lg font-semibold">Admissions</h3>
                                             </div>
-                                            {isLoadingPatientDetails ? (
+                                            {isLoading ? (
                                                 <div className="animate-pulse px-6 py-4">Chargement des admissions...</div>
                                             ) : (
-                                                <div className="px-6 pb-6 grid gap-4">
+                                                <div className="grid gap-4 px-6 pb-6">
                                                     {patientDetails?.admissions?.map((admission: _Admission) => (
                                                         <div
                                                             key={admission.id}
-                                                            className="
-                                                                rounded-lg bg-gray-50 p-4 dark:bg-gray-700
-                                                                transition-all duration-300 ease-in-out
-                                                            "
+                                                            className="rounded-lg bg-gray-50 p-4 transition-all duration-300 ease-in-out dark:bg-gray-700"
                                                         >
                                                             <p>Date: {admission.date}</p>
                                                             <p>Type: {admission.type}</p>

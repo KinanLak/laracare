@@ -96,14 +96,17 @@ class PatientController extends Controller
     }
 
     /**
-     * Get patient details with admissions for API.
+     * Get patient details with admissions and personal info for API.
      */
     public function getPatientDetails($patientId)
     {
         $patient = Patient::with(['personne', 'admissions'])->findOrFail($patientId);
         return response()->json([
-            'patient' => $patient,
-            'admissions' => $patient->admissions
+            'date_naissance' => $patient->personne->date_naissance,
+            'age' => $patient->personne->age,
+            'nom' => $patient->personne->nom,
+            'prenom' => $patient->personne->prenom,
+            'admissions' => $patient->admissions,
         ]);
     }
 }
