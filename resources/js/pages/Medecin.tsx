@@ -5,6 +5,8 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { useQuery } from '@tanstack/react-query';
 import { ClipboardList, Eye, Pencil, Plus, Trash2 } from 'lucide-react';
 
+import { _Patient, _Admission } from '@/lib/types';
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Médecins',
@@ -101,8 +103,8 @@ export default function Medecins() {
                                         <div className="animate-pulse">Chargement des patients...</div>
                                     ) : (
                                         <div className="grid gap-4">
-                                            {medecinDetails?.patients.map((patient: any) => (
-                                                <div key={patient.id} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
+                                            {medecinDetails?.patients.map((patient: _Patient) => (
+                                                <div key={patient.patientid} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
                                                     {/* Détails du patient */}
                                                     <p>ID: {patient.patientid}</p>
                                                     <p>DNI: {patient.dni}</p>
@@ -112,18 +114,18 @@ export default function Medecins() {
                                     )}
                                 </div>
 
-                                {/* Affichage dynamique des consultations */}
+                                {/* Affichage dynamique des admissions */}
                                 <div className="border-t border-gray-200 p-4 dark:border-gray-700">
-                                    <h3 className="mb-4 text-lg font-semibold">Consultations récentes</h3>
+                                    <h3 className="mb-4 text-lg font-semibold">Admissions récentes</h3>
                                     {isLoading ? (
-                                        <div className="animate-pulse">Chargement des consultations...</div>
+                                        <div className="animate-pulse">Chargement des admissions...</div>
                                     ) : (
                                         <div className="grid gap-4">
-                                            {medecinDetails?.consultations.map((consultation: any) => (
-                                                <div key={consultation.id} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
+                                            {medecinDetails?.admissions.map((admission: _Admission) => (
+                                                <div key={admission.id} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
                                                     {/* Détails de la consultation */}
-                                                    <p>Date: {consultation.date}</p>
-                                                    <p>Patient: {consultation.patient_id}</p>
+                                                    <p>Date: {admission.date}</p>
+                                                    <p>Patient: {admission.patientid}</p>
                                                 </div>
                                             ))}
                                         </div>
