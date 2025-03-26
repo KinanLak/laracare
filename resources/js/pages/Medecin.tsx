@@ -1,5 +1,6 @@
+import MedecinFormModal from '@/components/medecin/MedecinFormModal';
 import AppLayout from '@/layouts/app-layout';
-import { type _Medecin } from '@/lib/types';
+import { type _Hopital, type _Medecin } from '@/lib/types';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useQuery } from '@tanstack/react-query';
@@ -15,11 +16,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface MedecinProps extends Record<string, unknown> {
     medecins: _Medecin[];
+    hopitals: _Hopital[];
 }
 
 export default function Medecins() {
-    const { medecins } = usePage<MedecinProps>().props;
+    const { medecins, hopitals } = usePage<MedecinProps>().props;
     const [expandedMedecin, setExpandedMedecin] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingMedecin, setEditingMedecin] = useState<_Medecin | undefined>(undefined);
 
     const fetchMedecinDetails = async (medecinId: string) => {
         const response = await fetch(`/api/medecins/${medecinId}/details`);
@@ -28,6 +32,16 @@ export default function Medecins() {
 
     const toggleMedecinExpansion = (medecinId: string) => {
         setExpandedMedecin(expandedMedecin === medecinId ? null : medecinId);
+    };
+
+    const openCreateModal = () => {
+        setEditingMedecin(undefined);
+        setIsModalOpen(true);
+    };
+
+    const openEditModal = (medecin: _Medecin) => {
+        setEditingMedecin(medecin);
+        setIsModalOpen(true);
     };
 
     return (
@@ -41,6 +55,10 @@ export default function Medecins() {
                         Liste des Médecins
                     </h1>
                     <Link
+                        onClick={(e) => {
+                            e.preventDefault();
+                            openCreateModal();
+                        }}
                         href={route('medecins.create')}
                         className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
                     >
@@ -72,16 +90,17 @@ export default function Medecins() {
                                         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                                             {medecin.personne ? `Dr. ${medecin.personne.nom} ${medecin.personne.prenom}` : `Médecin ${medecin.hasld}`}
                                         </h2>
-                                        <p className="text-sm text-gray-600 dark:text-gray-300">
-                                            {medecin.specialite}
-                                        </p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">{medecin.specialite}</p>
                                     </div>
 
                                     <div className="flex items-center gap-2">
                                         <div className="flex gap-2">
                                             <Link
                                                 href={route('medecins.edit', medecin.hasld)}
-                                                onClick={(e) => e.stopPropagation()}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    openEditModal(medecin);
+                                                }}
                                                 className="rounded-full p-2 text-green-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-green-50 active:scale-95"
                                             >
                                                 <Pencil className="h-5 w-5" />
@@ -111,7 +130,7 @@ export default function Medecins() {
                                             </p>
                                             <p>
                                                 <span className="font-medium text-gray-800 dark:text-gray-200">Hopital :</span>{' '}
-                                                {isLoading ? 'Chargement...' : medecinDetails?.hopital.nom}
+                                                {isLoading ? 'Chargement...' : medecinDetails?.hopital_id}
                                             </p>
                                             <p>
                                                 <span className="font-medium text-gray-800 dark:text-gray-200">Status:</span>{' '}
@@ -161,6 +180,8 @@ export default function Medecins() {
                     </div>
                 )}
             </div>
+
+            <MedecinFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} medecin={editingMedecin} hopitals={hopitals} />
         </AppLayout>
     );
 }

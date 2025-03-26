@@ -1,3 +1,4 @@
+import HopitalFormModal from '@/components/hopital/HopitalFormModal';
 import AppLayout from '@/layouts/app-layout';
 import { type _Hopital } from '@/lib/types';
 import { type BreadcrumbItem } from '@/types';
@@ -20,6 +21,8 @@ interface HopitalProps extends Record<string, unknown> {
 export default function Hopitaux() {
     const { hopitals } = usePage<HopitalProps>().props;
     const [expandedHopital, setExpandedHopital] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingHopital, setEditingHopital] = useState<_Hopital | undefined>(undefined);
 
     const fetchHopitalDetails = async (hopitalId: string) => {
         const response = await fetch(`/api/hopitals/${hopitalId}/details`);
@@ -28,6 +31,16 @@ export default function Hopitaux() {
 
     const toggleHopitalExpansion = (hopitalId: string) => {
         setExpandedHopital(expandedHopital === hopitalId ? null : hopitalId);
+    };
+
+    const openCreateModal = () => {
+        setEditingHopital(undefined);
+        setIsModalOpen(true);
+    };
+
+    const openEditModal = (hopital: _Hopital) => {
+        setEditingHopital(hopital);
+        setIsModalOpen(true);
     };
 
     return (
@@ -41,6 +54,10 @@ export default function Hopitaux() {
                         Nos Hôpitaux
                     </h1>
                     <Link
+                        onClick={(e) => {
+                            e.preventDefault();
+                            openCreateModal();
+                        }}
                         href={route('hopitals.create')}
                         className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700"
                     >
@@ -77,7 +94,10 @@ export default function Hopitaux() {
                                         <div className="flex gap-2">
                                             <Link
                                                 href={route('hopitals.edit', hopital.id)}
-                                                onClick={(e) => e.stopPropagation()}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    openEditModal(hopital);
+                                                }}
                                                 className="rounded-full p-2 text-green-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-green-50 active:scale-95"
                                             >
                                                 <Pencil className="h-5 w-5" />
@@ -120,26 +140,6 @@ export default function Hopitaux() {
                                                 {isLoading ? 'Chargement...' : hopitalDetails?.directeur}
                                             </p>
                                         </div>
-
-                                        <div className="mt-4 border-t border-gray-200 pt-4 dark:border-gray-700">
-                                            <h3 className="mb-2 text-lg font-semibold">Médecins</h3>
-                                            <div className="grid gap-2">
-                                                {isLoading ? (
-                                                    <div className="animate-pulse">Chargement des médecins...</div>
-                                                ) : (
-                                                    hopitalDetails?.medecins?.map((medecin: any) => (
-                                                        <div key={medecin.id} className="rounded-lg bg-gray-50 p-3 dark:bg-gray-700">
-                                                            <p className="font-medium">
-                                                                {medecin.nom} {medecin.prenom}
-                                                            </p>
-                                                            <p className="text-sm text-gray-600 dark:text-gray-300">
-                                                                Spécialité: {medecin.specialite}
-                                                            </p>
-                                                        </div>
-                                                    ))
-                                                )}
-                                            </div>
-                                        </div>
                                     </div>
                                 )}
                             </div>
@@ -154,6 +154,8 @@ export default function Hopitaux() {
                     </div>
                 )}
             </div>
+
+            <HopitalFormModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} hopital={editingHopital} />
         </AppLayout>
     );
 }

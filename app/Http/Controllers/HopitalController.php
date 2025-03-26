@@ -5,16 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Hopital;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class HopitalController extends Controller
 {
+    private function generateHopitalId()
+    {
+        $prefix = 'HOP';
+        $random = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        return $prefix . $random;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $hopitals = Hopital::all();
-        return Inertia::render('Hopital/Index', [
+        return Inertia::render('Hopital', [
             'hopitals' => $hopitals
         ]);
     }
@@ -33,7 +41,6 @@ class HopitalController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'id' => 'required|string|max:255|unique:hopitals',
             'nom' => 'required|string|max:255',
             'adresse' => 'required|string|max:255',
             'telephone' => 'required|string|max:255',
@@ -42,9 +49,10 @@ class HopitalController extends Controller
             'directeur' => 'required|string|max:255',
         ]);
 
-        Hopital::create($validated);
+        $validated['id'] = $this->generateHopitalId();
+        $hopital = Hopital::create($validated);
 
-        return redirect()->route('hopitals.index')
+        return redirect()->back()
             ->with('success', 'Hôpital créé avec succès.');
     }
 

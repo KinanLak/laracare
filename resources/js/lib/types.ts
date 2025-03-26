@@ -27,6 +27,8 @@ export interface _Medecin {
     licence_medicale: string;
     specialite: string;
     hopital_id: string;
+    hopital: _Hopital | null;
+    personne: _Personne | null;
 }
 
 export interface _Patient {
@@ -61,4 +63,6 @@ export interface _Hopital {
     ville: string;
     email: string;
     directeur: string;
+    medecins: _Medecin[] | null;
+    unites: _Unite[] | null;
 }
