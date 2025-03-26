@@ -90,7 +90,7 @@ export default function Medecins() {
                                                 href={route('medecins.destroy', medecin.hasld)}
                                                 method="delete"
                                                 as="button"
-                                                onClick={(e) => e.stopPropagation()}
+                                                onClick={() => window.location.reload()}
                                                 className="rounded-full p-2 text-red-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-50 active:scale-95"
                                             >
                                                 <Trash2 className="h-5 w-5" />

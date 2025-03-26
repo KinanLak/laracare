@@ -100,9 +100,7 @@ class MedecinController extends Controller
     public function destroy(Medecin $medecin)
     {
         $medecin->delete();
-
-        return redirect()->route('medecins.index')
-            ->with('success', 'Médecin supprimé avec succès.');
+        
     }
 
     /**

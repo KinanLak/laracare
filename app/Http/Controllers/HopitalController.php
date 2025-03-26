@@ -94,9 +94,6 @@ class HopitalController extends Controller
     public function destroy(Hopital $hopital)
     {
         $hopital->delete();
-
-        return redirect()->route('hopitals.index')
-            ->with('success', 'Hôpital supprimé avec succès.');
     }
 
     /**

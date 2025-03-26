@@ -86,7 +86,7 @@ export default function Hopitaux() {
                                                 href={route('hopitals.destroy', hopital.id)}
                                                 method="delete"
                                                 as="button"
-                                                onClick={(e) => e.stopPropagation()}
+                                                onClick={() => window.location.reload()}
                                                 className="rounded-full p-2 text-red-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-50 active:scale-95"
                                                 data-confirm="Êtes-vous sûr de vouloir supprimer cet hôpital ?"
                                             >
