@@ -164,15 +164,4 @@ class AdmissionController extends Controller
         return redirect()->route('admissions.index')
             ->with('success', 'Admission supprimée avec succès.');
     }
-
-    /**
-     * Get all admissions by unite code for API.
-     */
-    public function getByUniteCode($code)
-    {
-        $unite = Unite::findOrFail($code);
-        $admissions = $unite->admissions()->with('patient.personne')->get();
-
-        return response()->json($admissions);
-    }
 }
