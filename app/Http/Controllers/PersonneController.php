@@ -94,4 +94,13 @@ class PersonneController extends Controller
         return redirect()->route('personnes.index')
             ->with('success', 'Personne supprimée avec succès.');
     }
+
+    /**
+     * Get person by Dni.
+     */
+    public function getByDni($dni)
+    {
+        $personne = Personne::where('dni', $dni)->first();
+        return response()->json($personne);
+    }
 }

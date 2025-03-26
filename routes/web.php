@@ -120,6 +120,9 @@ Route::middleware('auth')->group(function () {
     // API routes for patients
     Route::get('/api/patients/{patientid}/details', [PatientController::class, 'getPatientDetails'])->name('api.patients.details');
 
+    // API routes for personnes
+    Route::get('/api/personnes/{dni}/details', [PersonneController::class, 'getByDni'])->name('api.personne.by-dni');
+
     // API routes for chambres
     Route::get('/api/chambres/{nombre}/details', [ChambreController::class, 'getChambreDetails'])->name('api.chambres.details');
 });
