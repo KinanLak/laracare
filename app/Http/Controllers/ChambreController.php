@@ -104,4 +104,15 @@ class ChambreController extends Controller
         return redirect()->route('chambres.index')
             ->with('success', 'Chambre supprimée avec succès.');
     }
+
+    /**
+     * Get Chambre details with admissions for API.
+     */
+    public function getChambreDetails($nombre)
+    {
+        $chambre = Chambre::with(['unite', 'admissions'])
+            ->where('nombre', $nombre)
+            ->firstOrFail();
+        return response()->json($chambre);
+    }
 }

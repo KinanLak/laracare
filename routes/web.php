@@ -121,7 +121,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/patients/{patientid}/details', [PatientController::class, 'getPatientDetails'])->name('api.patients.details');
 
     // API routes for chambres
-    //Route::get('/api/admissions/chambres/{id}/details', [AdmissionController::class, 'getByChambreId'])->name('api.admissions.by-chambre');
+    Route::get('/api/chambres/{nombre}/details', [ChambreController::class, 'getChambreDetails'])->name('api.chambres.details');
 });
 
 require __DIR__ . '/settings.php';
