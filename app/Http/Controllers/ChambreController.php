@@ -101,8 +101,6 @@ class ChambreController extends Controller
     {
         $chambre->delete();
 
-        return redirect()->route('chambres.index')
-            ->with('success', 'Chambre supprimée avec succès.');
     }
 
     /**

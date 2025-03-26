@@ -86,11 +86,11 @@ export default function Unites() {
                                                 <Pencil className="h-5 w-5" />
                                             </Link>
                                             <Link
-                                                href={'#'}
+                                                href={route("api.unites.destroy", unite.code)}
                                                 method="delete"
                                                 as="button"
-                                                onClick={(e) => e.stopPropagation()}
-                                                className="rounded-full p-2 text-red-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-50 active:scale-95"
+                                                onClick={() => window.location.reload()}
+                                                className="hover:cursor-pointer rounded-full p-2 text-red-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-50 active:scale-95"
                                             >
                                                 <Trash2 className="h-5 w-5" />
                                             </Link>

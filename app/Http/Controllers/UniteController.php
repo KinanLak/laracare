@@ -102,8 +102,6 @@ class UniteController extends Controller
     {
         $unite->delete();
 
-        return redirect()->route('unites.index')
-            ->with('success', 'Unité supprimée avec succès.');
     }
 
     /**
