@@ -115,6 +115,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/chambres/unites/{code}/details', [ChambreController::class, 'getByUniteCode'])->name('api.chambres.by-unite');
     Route::get('/api/admissions/unites/{code}/details', [AdmissionController::class, 'getByUniteCode'])->name('api.admissions.by-unite');
 
+    // API routes for patients
+    Route::get('/api/patients/{patientid}/details', [PatientController::class, 'getPatientDetails'])->name('api.patients.details');
+
     // API routes for chambres
     //Route::get('/api/admissions/chambres/{id}/details', [AdmissionController::class, 'getByChambreId'])->name('api.admissions.by-chambre');
 });

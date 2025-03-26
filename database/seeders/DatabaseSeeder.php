@@ -26,17 +26,17 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password')
         ]);
 
-        // Create 5 hospitals
-        $hopitals = Hopital::factory(5)->create();
+        // Create 3 hospitals
+        $hopitals = Hopital::factory(3)->create();
 
         // Create personnes for doctors first
-        $medecinPersonnes = Personne::factory(20)->create();
+        $medecinPersonnes = Personne::factory(9)->create();
         
-        // Create 20 doctors (4 per hospital), using existing personnes
+        // Create 9 doctors (3 per hospital), using existing personnes
         $medecins = [];
         $personneIndex = 0;
         foreach ($hopitals as $hopital) {
-            for ($i = 0; $i < 4; $i++) {
+            for ($i = 0; $i < 3; $i++) {
                 $medecins[] = Medecin::factory()->create([
                     'hopital_id' => $hopital->id,
                     'dni' => $medecinPersonnes[$personneIndex++]->dni
@@ -44,7 +44,7 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Create 10 unités (units), assigned to random hospitals
+        // Create 6 unités (units), assigned to random hospitals
         $unites = [];
         foreach ($hopitals as $hopital) {
             $unites = array_merge($unites, Unite::factory(2)->create([
@@ -52,25 +52,25 @@ class DatabaseSeeder extends Seeder
             ])->all());
         }
 
-        // For each unit, create 3-8 chambres (rooms)
+        // For each unit, create 2-5 chambres (rooms)
         foreach ($unites as $unite) {
-            Chambre::factory(rand(3, 8))->create([
+            Chambre::factory(rand(2, 5))->create([
                 'unite_code' => $unite->code
             ]);
         }
 
-        // Create 50 patients (creates personnes implicitly)
+        // Create 15 patients (creates personnes implicitly)
         $patients = [];
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $personne = Personne::factory()->create();
             $patients[] = Patient::factory()->create([
                 'dni' => $personne->dni
             ]);
         }
 
-        // Create 100 random admissions with random doctors
+        // Create 30 random admissions with random doctors
         $admissions = [];
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 30; $i++) {
             $admissions[] = Admission::factory()->create([
                 'patientid' => $patients[array_rand($patients)]->patientid,
                 'medecinId' => $medecins[array_rand($medecins)]->hasld

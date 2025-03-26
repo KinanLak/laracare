@@ -94,4 +94,16 @@ class PatientController extends Controller
         return redirect()->route('patients.index')
             ->with('success', 'Patient supprimé avec succès.');
     }
+
+    /**
+     * Get patient details with admissions for API.
+     */
+    public function getPatientDetails($patientId)
+    {
+        $patient = Patient::with(['personne', 'admissions'])->findOrFail($patientId);
+        return response()->json([
+            'patient' => $patient,
+            'admissions' => $patient->admissions
+        ]);
+    }
 }

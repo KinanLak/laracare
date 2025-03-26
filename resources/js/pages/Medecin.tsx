@@ -123,7 +123,7 @@ export default function Medecins() {
                                         <div className="grid gap-4">
                                             {medecinDetails?.admissions.map((admission: _Admission) => (
                                                 <div key={admission.id} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
-                                                    {/* Détails de la consultation */}
+                                                    {/* Détails de l'admission */}
                                                     <p>Date: {admission.date}</p>
                                                     <p>Patient: {admission.patientid}</p>
                                                 </div>
