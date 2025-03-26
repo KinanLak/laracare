@@ -164,4 +164,14 @@ class AdmissionController extends Controller
         return redirect()->route('admissions.index')
             ->with('success', 'Admission supprimée avec succès.');
     }
+
+    /**
+     * Get admission details.
+     */
+    public function getAdmissionDetails($id)
+    {
+        $admission = Admission::with(['patient.personne', 'unites', 'chambres', 'medecin.personne'])->where('id', $id)->firstOrFail();
+        return response()->json($admission);
+    }
+    
 }

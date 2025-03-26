@@ -114,6 +114,9 @@ Route::middleware('auth')->group(function () {
     // API routes for unites
     Route::get('/api/unites/{uniteid}/details', [UniteController::class, 'getUniteDetails'])->name('api.unites.details');
 
+    // API routes for admissions
+    Route::get('/api/admissions/{id}/details', [AdmissionController::class, 'getAdmissionDetails'])->name('api.admissions.details');
+
     // API routes for patients
     Route::get('/api/patients/{patientid}/details', [PatientController::class, 'getPatientDetails'])->name('api.patients.details');
 
