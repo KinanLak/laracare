@@ -166,13 +166,12 @@ class AdmissionController extends Controller
     }
 
     /**
-     * Get all admissions by unite code for API.
+     * Get admission details.
      */
-    public function getByUniteCode($code)
+    public function getAdmissionDetails($id)
     {
-        $unite = Unite::findOrFail($code);
-        $admissions = $unite->admissions()->with('patient.personne')->get();
-
-        return response()->json($admissions);
+        $admission = Admission::with(['patient.personne', 'unites', 'chambres', 'medecin.personne'])->where('id', $id)->firstOrFail();
+        return response()->json($admission);
     }
+    
 }

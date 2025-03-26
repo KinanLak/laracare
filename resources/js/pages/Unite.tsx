@@ -23,14 +23,10 @@ export default function Unites() {
     const { unites } = usePage<UniteProps>().props;
     const [expandedUnite, setExpandedUnite] = useState<string | null>(null);
 
-    const fetchChambresData = async (uniteCode: string) => {
-        const response = await fetch(`/api/chambres/unites/${uniteCode}/details`);
-        return response.json();
-    };
-
-    const fetchAdmissionsData = async (uniteCode: string) => {
-        const response = await fetch(`/api/admissions/unites/${uniteCode}/details`);
-        return response.json();
+    const fetchUniteData = async (code: string) => {
+        const response = await fetch(`/api/unites/${code}/details`);
+        const data = await response.json();
+        return data;
     };
 
     const toggleUniteExpansion = (uniteCode: string) => {
@@ -60,15 +56,9 @@ export default function Unites() {
                     {unites.map((unite) => {
                         const isExpanded = expandedUnite === unite.code;
 
-                        const { data: chambresData, isLoading: isLoadingChambres } = useQuery({
-                            queryKey: ['chambres', unite.code],
-                            queryFn: () => fetchChambresData(unite.code),
-                            enabled: isExpanded,
-                        });
-
-                        const { data: admissionsData, isLoading: isLoadingAdmissions } = useQuery({
-                            queryKey: ['admissions', unite.code],
-                            queryFn: () => fetchAdmissionsData(unite.code),
+                        const { data: uniteData, isLoading } = useQuery({
+                            queryKey: ['unite', unite.code],
+                            queryFn: () => fetchUniteData(unite.code),
                             enabled: isExpanded,
                         });
 
@@ -170,11 +160,11 @@ export default function Unites() {
                                             {/* Affichage dynamique des chambres */}
                                             <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-700">
                                                 <h3 className="mb-4 text-lg font-semibold">Chambres</h3>
-                                                {isLoadingChambres ? (
-                                                    <div className="animate-pulse">Chargement des chambres...</div>
+                                                {isLoading ? (
+                                                    <div className="animate-pulse">Chargement des données...</div>
                                                 ) : (
                                                     <div className="grid gap-4">
-                                                        {chambresData?.map((chambre: _Chambre) => (
+                                                        {uniteData?.chambres.map((chambre: _Chambre) => (
                                                             <div
                                                                 key={chambre.nombre}
                                                                 className="
@@ -193,11 +183,11 @@ export default function Unites() {
                                             {/* Affichage dynamique des admissions */}
                                             <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-700">
                                                 <h3 className="mb-4 text-lg font-semibold">Admissions récentes</h3>
-                                                {isLoadingAdmissions ? (
-                                                    <div className="animate-pulse">Chargement des admissions...</div>
+                                                {isLoading ? (
+                                                    <div className="animate-pulse">Chargement des données...</div>
                                                 ) : (
                                                     <div className="grid gap-4">
-                                                        {admissionsData?.map((admission: _Admission) => (
+                                                        {uniteData?.admissions.map((admission: _Admission) => (
                                                             <div
                                                                 key={admission.id}
                                                                 className="

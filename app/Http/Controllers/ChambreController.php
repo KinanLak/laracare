@@ -104,13 +104,4 @@ class ChambreController extends Controller
         return redirect()->route('chambres.index')
             ->with('success', 'Chambre supprimée avec succès.');
     }
-
-    /**
-     * Get all chambres by unite code for API.
-     */
-    public function getByUniteCode($code)
-    {
-        $chambres = Chambre::where('unite_code', $code)->get();
-        return response()->json($chambres);
-    }
 }

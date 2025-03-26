@@ -105,4 +105,15 @@ class UniteController extends Controller
         return redirect()->route('unites.index')
             ->with('success', 'Unité supprimée avec succès.');
     }
+
+    /**
+     * Get Unite details with chambres and admissions for API.
+     */
+    public function getUniteDetails($code)
+    {
+        $unite = Unite::with(['chambres', 'admissions', 'hopital'])
+            ->where('code', $code)
+            ->firstOrFail();
+        return response()->json($unite);
+    }
 }
