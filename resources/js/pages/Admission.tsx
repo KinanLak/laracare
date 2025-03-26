@@ -1,5 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { type _Admission } from '@/lib/types';
+import { _Unite, type _Admission, _Chambre } from '@/lib/types';
 import { type BreadcrumbItem } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { useQuery } from '@tanstack/react-query';
@@ -83,11 +83,11 @@ export default function Admissions() {
                                                 <Pencil className="h-5 w-5" />
                                             </Link>
                                             <Link
-                                                href={'#'}
+                                                href={route('admissions.destroy', admission.id)}
                                                 method="delete"
                                                 as="button"
-                                                onClick={(e) => e.stopPropagation()}
-                                                className="rounded-full p-2 text-red-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-50 active:scale-95"
+                                                onClick={() => window.location.reload()}
+                                                className="hover:cursor-pointer rounded-full p-2 text-red-600 transition-all duration-300 ease-in-out hover:scale-110 hover:bg-red-50 active:scale-95"
                                             >
                                                 <Trash2 className="h-5 w-5" />
                                             </Link>
@@ -174,7 +174,7 @@ export default function Admissions() {
                                                 <h3 className="text-lg font-semibold">Unités</h3>
                                             </div>
                                             <div className="grid gap-4 px-6 pb-6">
-                                                {admissionData?.unites?.map((unite: any) => (
+                                                {admissionData?.unites?.map((unite: _Unite) => (
                                                     <div key={unite.code} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
                                                         <p className="font-medium">{unite.nom}</p>
                                                         <p className="text-sm text-gray-600 dark:text-gray-300">Spécialité: {unite.specialite}</p>
@@ -189,8 +189,8 @@ export default function Admissions() {
                                                 <h3 className="text-lg font-semibold">Chambres</h3>
                                             </div>
                                             <div className="grid gap-4 px-6 pb-6">
-                                                {admissionData?.chambres?.map((chambre: any) => (
-                                                    <div key={chambre.id} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
+                                                {admissionData?.chambres?.map((chambre: _Chambre) => (
+                                                    <div key={chambre.nombre} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
                                                         <p className="font-medium">Chambre {chambre.nombre}</p>
                                                         <p className="text-sm text-gray-600 dark:text-gray-300">Capacité: {chambre.capacite} lits</p>
                                                     </div>

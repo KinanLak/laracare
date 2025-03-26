@@ -160,9 +160,6 @@ class AdmissionController extends Controller
     public function destroy(Admission $admission)
     {
         $admission->delete();
-
-        return redirect()->route('admissions.index')
-            ->with('success', 'Admission supprimée avec succès.');
     }
 
     /**
@@ -173,5 +170,4 @@ class AdmissionController extends Controller
         $admission = Admission::with(['patient.personne', 'unites', 'chambres', 'medecin.personne'])->where('id', $id)->firstOrFail();
         return response()->json($admission);
     }
-    
 }

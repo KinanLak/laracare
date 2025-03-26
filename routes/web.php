@@ -113,15 +113,21 @@ Route::middleware('auth')->group(function () {
 
     // API routes for unites
     Route::get('/api/unites/{uniteid}/details', [UniteController::class, 'getUniteDetails'])->name('api.unites.details');
+    Route::delete('/api/unites/{unite}', [UniteController::class, 'destroy'])->name('api.unites.destroy');
+
 
     // API routes for admissions
     Route::get('/api/admissions/{id}/details', [AdmissionController::class, 'getAdmissionDetails'])->name('api.admissions.details');
+    Route::delete('/api/admissions/{admission}', [AdmissionController::class, 'destroy'])->name('api.admissions.destroy');
 
     // API routes for patients
     Route::get('/api/patients/{patientid}/details', [PatientController::class, 'getPatientDetails'])->name('api.patients.details');
+    Route::delete('/api/patients/{patient}', [PatientController::class, 'destroy'])->name('api.patients.destroy');
 
     // API routes for chambres
     Route::get('/api/chambres/{nombre}/details', [ChambreController::class, 'getChambreDetails'])->name('api.chambres.details');
+    Route::delete('/api/chambres/{chambre}', [ChambreController::class, 'destroy'])->name('api.chambres.destroy');
+
 });
 
 require __DIR__ . '/settings.php';
