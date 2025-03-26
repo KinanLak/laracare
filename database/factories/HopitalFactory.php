@@ -24,7 +24,7 @@ class HopitalFactory extends Factory
     {
         return [
             'id' => 'HOP' . $this->faker->unique()->numerify('######'),
-            'nom' => $this->faker->company(),
+            'nom' => $this->faker->company() . ' Hospital',
             'adresse' => $this->faker->streetAddress(),
             'telephone' => $this->faker->phoneNumber(),
             'ville' => $this->faker->city(),

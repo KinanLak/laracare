@@ -4,9 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGrid, GitBranch } from 'lucide-react';
-import { Hospital } from 'lucide-react';
-
+import { Github, Hospital, LayoutGrid } from 'lucide-react';
 
 const mainNavItems: NavItem[] = [
     {
@@ -48,14 +46,14 @@ const mainNavItems: NavItem[] = [
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'GitHub Kinan Lakdhar',
+        title: 'Kinan',
         url: 'https://github.com/KinanLak',
-        icon: GitBranch,
+        icon: Github,
     },
     {
-        title: 'GitHub Thomas Vansteenwinckel',
+        title: 'Thomas',
         url: 'https://github.com/KSOOOW',
-        icon: GitBranch,
+        icon: Github,
     },
 ];
 
@@ -67,8 +65,8 @@ export function AppSidebar() {
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
                             <Link href="/" prefetch>
-                                <Hospital className="w-16 h-16 ml-2.5 text-blue-600 dark:text-blue-400" strokeWidth={2.0} />
-                                <h1 className='font-bold text-blue-600 dark:text-blue-400'>Laracare</h1>
+                                <Hospital className="ml-2.5 text-blue-600 dark:text-blue-400" strokeWidth={2.0} />
+                                <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">Laracare</h1>
                             </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>

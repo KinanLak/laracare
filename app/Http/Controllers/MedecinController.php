@@ -14,8 +14,9 @@ class MedecinController extends Controller
      */
     public function index()
     {
-        $medecins = Medecin::with(['hopital', 'personne'])->get();
-        return Inertia::render('Medecin/Index', [
+        // On s'assure que les relations sont bien chargées
+        $medecins = Medecin::with(['personne', 'hopital'])->get();
+        return Inertia::render('Medecin', [
             'medecins' => $medecins
         ]);
     }
@@ -102,5 +103,22 @@ class MedecinController extends Controller
 
         return redirect()->route('medecins.index')
             ->with('success', 'Médecin supprimé avec succès.');
+    }
+
+    /**
+     * Get medecin details with additional info for API.
+     */
+    public function getMedecinDetails($medecinId)
+    {
+        $medecin = Medecin::with(['personne', 'hopital', 'admissions'])->findOrFail($medecinId);
+        return response()->json([
+            'status' => $medecin->status,
+            'contrat' => $medecin->contrat,
+            'licence_medicale' => $medecin->licence_medicale,
+            'nom' => $medecin->personne->nom,
+            'prenom' => $medecin->personne->prenom,
+            'hopital' => $medecin->hopital,
+            'admissions' => $medecin->admissions,
+        ]);
     }
 }

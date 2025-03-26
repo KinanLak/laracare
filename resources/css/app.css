@@ -12,7 +12,7 @@
 
 @theme {
     --font-sans:
-        'Merriweather';
+        'Merriweather', 'serif-ui';
 
 
     --font-title: 'Merriweather', serif;

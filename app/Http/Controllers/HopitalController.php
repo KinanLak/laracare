@@ -98,4 +98,21 @@ class HopitalController extends Controller
         return redirect()->route('hopitals.index')
             ->with('success', 'Hôpital supprimé avec succès.');
     }
+
+    /**
+     * Get hopital details with medecins for API.
+     */
+    public function getHopitalDetails($id)
+    {
+        $hopital = Hopital::with('medecins')->findOrFail($id);
+        return response()->json([
+            'nom' => $hopital->nom,
+            'adresse' => $hopital->adresse,
+            'telephone' => $hopital->telephone,
+            'ville' => $hopital->ville,
+            'email' => $hopital->email,
+            'directeur' => $hopital->directeur,
+            'medecins' => $hopital->medecins
+        ]);
+    }
 }

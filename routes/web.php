@@ -39,7 +39,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     );
     })->name('dashboard');
 
-
     Route::get('Hopital', function () {
         return Inertia::render('Hopital',
         [
@@ -95,6 +94,7 @@ Route::middleware('auth')->group(function () {
 
     // Medecin routes
     Route::resource('medecins', MedecinController::class);
+    Route::get('/api/medecins/{hasld}/details', [MedecinController::class, 'getMedecinDetails'])->name('api.medecins.details');
 
     // Personne routes
     Route::resource('personnes', PersonneController::class);
@@ -122,6 +122,9 @@ Route::middleware('auth')->group(function () {
 
     // API routes for chambres
     Route::get('/api/chambres/{nombre}/details', [ChambreController::class, 'getChambreDetails'])->name('api.chambres.details');
+
+    // API routes for hopitals
+    Route::get('/api/hopitals/{id}/details', [HopitalController::class, 'getHopitalDetails'])->name('api.hopitals.details');
 });
 
 require __DIR__ . '/settings.php';

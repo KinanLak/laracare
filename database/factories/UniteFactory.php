@@ -33,7 +33,7 @@ class UniteFactory extends Factory
         ];
 
         return [
-            'code' => 'U' . $this->faker->unique()->numerify('####'),
+            'code' => 'U' . $this->faker->unique()->numerify('######'),
             'nom' => 'Unité ' . $this->faker->word(),
             'responsable' => $this->faker->name(),
             'specialite' => $this->faker->randomElement($specialites),

@@ -27,7 +27,7 @@ class MedecinFactory extends Factory
         $personne = Personne::factory()->create();
 
         return [
-            'hasld' => Str::uuid(),
+            'hasld' => 'HAS' . $this->faker->unique()->numerify('######'),
             'status' => $this->faker->randomElement(['actif', 'inactif']),
             'contrat' => $this->faker->randomElement(['CDI', 'CDD', 'Vacation']),
             'licence_medicale' => $this->faker->unique()->numerify('LM########'),

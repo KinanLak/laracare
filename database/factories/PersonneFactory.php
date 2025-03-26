@@ -29,7 +29,7 @@ class PersonneFactory extends Factory
         $age = Carbon::parse($birthdate)->age;
 
         return [
-            'dni' => 'DNI' . $this->faker->unique()->numerify('########'),
+            'dni' => 'DNI' . $this->faker->unique()->numerify('######'),
             'prenom' => $this->faker->firstName(),
             'nom' => $this->faker->lastName(),
             'age' => $age,

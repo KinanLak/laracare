@@ -27,7 +27,7 @@ class AdmissionFactory extends Factory
         $insurances = ['Sécurité Sociale', 'Mutuelle', 'Privé', 'Sans assurance'];
 
         return [
-            'id' => 'ADM' . $this->faker->unique()->numerify('#######'),
+            'id' => 'ADM' . $this->faker->unique()->numerify('######'),
             'date' => $this->faker->dateTimeBetween('-3 months', '+1 month')->format('Y-m-d'),
             'heure' => $this->faker->time(),
             'type' => $this->faker->randomElement($types),

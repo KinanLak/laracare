@@ -100,13 +100,12 @@ export default function Admissions() {
                                 </div>
 
                                 {isExpanded && (
-                                    <>
-                                        {/* Détails de l'admission */}
-                                        <div className="mt-4 space-y-2 px-6 pb-4 text-sm text-gray-600 dark:text-gray-300">
-                                            {isLoading ? (
-                                                <div className="animate-pulse">Chargement des détails...</div>
-                                            ) : (
-                                                <>
+                                    <div className="mt-4 space-y-4 px-6 pb-4 text-sm text-gray-600 dark:text-gray-300">
+                                        {isLoading ? (
+                                            <div className="animate-pulse">Chargement des détails...</div>
+                                        ) : (
+                                            <>
+                                                <div className="mt-4 space-y-2 text-sm text-gray-600 dark:text-gray-300">
                                                     <p>
                                                         <span className="font-medium text-gray-800 dark:text-gray-200">Date :</span>{' '}
                                                         {admissionData?.date} à {admissionData?.heure}
@@ -116,6 +115,10 @@ export default function Admissions() {
                                                         {admissionData?.type}
                                                     </p>
                                                     <p>
+                                                        <span className="font-medium text-gray-800 dark:text-gray-200">Justification :</span>{' '}
+                                                        {admissionData?.justification}
+                                                    </p>
+                                                    <p>
                                                         <span className="font-medium text-gray-800 dark:text-gray-200">Statut :</span>{' '}
                                                         {admissionData?.status}
                                                     </p>
@@ -123,81 +126,78 @@ export default function Admissions() {
                                                         <span className="font-medium text-gray-800 dark:text-gray-200">Assurance :</span>{' '}
                                                         {admissionData?.insurance}
                                                     </p>
-                                                </>
-                                            )}
-                                        </div>
-
-                                        {/* Sections supplémentaires avec bordure */}
-                                        <div className="border-t border-gray-200 dark:border-gray-700">
-                                            <div className="px-6 pt-4 pb-2">
-                                                <h3 className="text-lg font-semibold">Informations du patient</h3>
-                                            </div>
-                                            <div className="grid gap-4 px-6 pb-6">
-                                                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
                                                     <p>
-                                                        <span className="font-medium text-gray-800 dark:text-gray-200">ID :</span>{' '}
-                                                        {admission.patientid}
-                                                    </p>
-                                                    <p>
-                                                        <span className="font-medium text-gray-800 dark:text-gray-200">Nom :</span>{' '}
-                                                        {admissionData?.patient?.personne?.nom}
-                                                    </p>
-                                                    <p>
-                                                        <span className="font-medium text-gray-800 dark:text-gray-200">Prénom :</span>{' '}
-                                                        {admissionData?.patient?.personne?.prenom}
+                                                        <span className="font-medium text-gray-800 dark:text-gray-200">Commentaires :</span>{' '}
+                                                        {admissionData?.commentaires}
                                                     </p>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        <div className="border-t border-gray-200 dark:border-gray-700">
-                                            <div className="px-6 pt-4 pb-2">
-                                                <h3 className="text-lg font-semibold">Médecin traitant</h3>
-                                            </div>
-                                            <div className="grid gap-4 px-6 pb-6">
-                                                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                                                    <p>
-                                                        <span className="font-medium text-gray-800 dark:text-gray-200">Nom :</span>{' '}
-                                                        {admissionData?.medecin?.personne?.nom}
-                                                    </p>
-                                                    <p>
-                                                        <span className="font-medium text-gray-800 dark:text-gray-200">Prénom :</span>{' '}
-                                                        {admissionData?.medecin?.personne?.prenom}
-                                                    </p>
+                                                {/* Informations du patient */}
+                                                <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-700">
+                                                    <h3 className="mb-4 text-lg font-semibold">Informations du patient</h3>
+                                                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                                        <p>
+                                                            <span className="font-medium text-gray-800 dark:text-gray-200">ID :</span>{' '}
+                                                            {admission.patientid}
+                                                        </p>
+                                                        <p>
+                                                            <span className="font-medium text-gray-800 dark:text-gray-200">Nom :</span>{' '}
+                                                            {admissionData?.patient?.personne?.nom}
+                                                        </p>
+                                                        <p>
+                                                            <span className="font-medium text-gray-800 dark:text-gray-200">Prénom :</span>{' '}
+                                                            {admissionData?.patient?.personne?.prenom}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
 
-                                        {/* Unités */}
-                                        <div className="border-t border-gray-200 dark:border-gray-700">
-                                            <div className="px-6 pt-4 pb-2">
-                                                <h3 className="text-lg font-semibold">Unités</h3>
-                                            </div>
-                                            <div className="grid gap-4 px-6 pb-6">
-                                                {admissionData?.unites?.map((unite: any) => (
-                                                    <div key={unite.code} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
-                                                        <p className="font-medium">{unite.nom}</p>
-                                                        <p className="text-sm text-gray-600 dark:text-gray-300">Spécialité: {unite.specialite}</p>
+                                                {/* Médecin traitant */}
+                                                <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-700">
+                                                    <h3 className="mb-4 text-lg font-semibold">Médecin traitant</h3>
+                                                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                                        <p>
+                                                            <span className="font-medium text-gray-800 dark:text-gray-200">Nom :</span>{' '}
+                                                            {admissionData?.medecin?.personne?.nom}
+                                                        </p>
+                                                        <p>
+                                                            <span className="font-medium text-gray-800 dark:text-gray-200">Prénom :</span>{' '}
+                                                            {admissionData?.medecin?.personne?.prenom}
+                                                        </p>
                                                     </div>
-                                                ))}
-                                            </div>
-                                        </div>
+                                                </div>
 
-                                        {/* Chambres */}
-                                        <div className="border-t border-gray-200 dark:border-gray-700">
-                                            <div className="px-6 pt-4 pb-2">
-                                                <h3 className="text-lg font-semibold">Chambres</h3>
-                                            </div>
-                                            <div className="grid gap-4 px-6 pb-6">
-                                                {admissionData?.chambres?.map((chambre: any) => (
-                                                    <div key={chambre.id} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
-                                                        <p className="font-medium">Chambre {chambre.nombre}</p>
-                                                        <p className="text-sm text-gray-600 dark:text-gray-300">Capacité: {chambre.capacite} lits</p>
+                                                {/* Unités */}
+                                                <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-700">
+                                                    <h3 className="mb-4 text-lg font-semibold">Unités</h3>
+                                                    <div className="grid gap-4">
+                                                        {admissionData?.unites?.map((unite: any) => (
+                                                            <div key={unite.code} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
+                                                                <p className="font-medium">{unite.nom}</p>
+                                                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                                    Spécialité: {unite.specialite}
+                                                                </p>
+                                                            </div>
+                                                        ))}
                                                     </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </>
+                                                </div>
+
+                                                {/* Chambres */}
+                                                <div className="mt-6 border-t border-gray-200 pt-4 dark:border-gray-700">
+                                                    <h3 className="mb-4 text-lg font-semibold">Chambres</h3>
+                                                    <div className="grid gap-4">
+                                                        {admissionData?.chambres?.map((chambre: any) => (
+                                                            <div key={chambre.id} className="rounded-lg bg-gray-50 p-4 dark:bg-gray-700">
+                                                                <p className="font-medium">Chambre {chambre.nombre}</p>
+                                                                <p className="text-sm text-gray-600 dark:text-gray-300">
+                                                                    Capacité: {chambre.capacite} lits
+                                                                </p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </>
+                                        )}
+                                    </div>
                                 )}
                             </div>
                         );
