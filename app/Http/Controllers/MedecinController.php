@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Medecin;
 use App\Models\Hopital;
+use App\Models\Personne;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,10 +15,12 @@ class MedecinController extends Controller
      */
     public function index()
     {
-        // On s'assure que les relations sont bien chargées
         $medecins = Medecin::with(['personne', 'hopital'])->get();
+        $hopitals = Hopital::all();
+        
         return Inertia::render('Medecin', [
-            'medecins' => $medecins
+            'medecins' => $medecins,
+            'hopitals' => $hopitals
         ]);
     }
 
@@ -38,16 +41,36 @@ class MedecinController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'hasld' => 'required|string|max:255|unique:medecins',
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'specialite' => 'required|string|max:255',
+            'hopital_id' => 'required|exists:hopitals,id',
             'status' => 'required|string|max:255',
             'contrat' => 'required|string|max:255',
             'licence_medicale' => 'required|string|max:255',
-            'specialite' => 'required|string|max:255',
-            'hopital_id' => 'required|string|exists:hopitals,id',
-            'dni' => 'required|string|exists:personnes,dni|unique:medecins',
         ]);
 
-        Medecin::create($validated);
+        // Générez automatiquement hasld et dni si nécessaire
+        $validated['hasld'] = 'MED' . uniqid();
+        $validated['dni'] = 'DNI' . uniqid();
+
+        // Créez d'abord la personne
+        $personne = Personne::create([
+            'nom' => $validated['nom'],
+            'prenom' => $validated['prenom'],
+            'dni' => $validated['dni'],
+        ]);
+
+        // Créez ensuite le médecin
+        $medecin = Medecin::create([
+            'hasld' => $validated['hasld'],
+            'status' => $validated['status'],
+            'contrat' => $validated['contrat'],
+            'licence_medicale' => $validated['licence_medicale'],
+            'specialite' => $validated['specialite'],
+            'hopital_id' => $validated['hopital_id'],
+            'dni' => $personne->dni,
+        ]);
 
         return redirect()->route('medecins.index')
             ->with('success', 'Médecin créé avec succès.');
@@ -117,6 +140,7 @@ class MedecinController extends Controller
             'prenom' => $medecin->personne->prenom,
             'hopital' => $medecin->hopital,
             'admissions' => $medecin->admissions,
+            'specialite' => $medecin->specialite,
         ]);
     }
 }

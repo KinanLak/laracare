@@ -120,4 +120,13 @@ class HopitalController extends Controller
             'medecins' => $hopital->medecins
         ]);
     }
+
+    /**
+     * Get all hopitals for API.
+     */
+    public function getHopitals()
+    {
+        $hopitals = Hopital::all();
+        return response()->json($hopitals);
+    }
 }

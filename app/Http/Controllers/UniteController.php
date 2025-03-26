@@ -49,9 +49,6 @@ class UniteController extends Controller
         ]);
 
         Unite::create($validated);
-
-        return redirect()->route('unites.index')
-            ->with('success', 'Unité créée avec succès.');
     }
 
     /**
@@ -91,8 +88,6 @@ class UniteController extends Controller
 
         $unite->update($validated);
 
-        return redirect()->route('unites.index')
-            ->with('success', 'Unité mise à jour avec succès.');
     }
 
     /**

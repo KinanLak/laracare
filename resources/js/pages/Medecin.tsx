@@ -25,10 +25,18 @@ export default function Medecins() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingMedecin, setEditingMedecin] = useState<_Medecin | undefined>(undefined);
 
+    console.log(hopitals);
+
     const fetchMedecinDetails = async (medecinId: string) => {
         const response = await fetch(`/api/medecins/${medecinId}/details`);
         return response.json();
     };
+
+    const { data: expandedMedecinDetails, isLoading: isLoadingDetails } = useQuery({
+        queryKey: ['medecin', expandedMedecin],
+        queryFn: () => fetchMedecinDetails(expandedMedecin || ''),
+        enabled: !!expandedMedecin,
+    });
 
     const toggleMedecinExpansion = (medecinId: string) => {
         setExpandedMedecin(expandedMedecin === medecinId ? null : medecinId);
@@ -70,12 +78,8 @@ export default function Medecins() {
                 <div className="grid grid-cols-1 gap-6">
                     {medecins.map((medecin: any) => {
                         const isExpanded = expandedMedecin === medecin.hasld;
-
-                        const { data: medecinDetails, isLoading } = useQuery({
-                            queryKey: ['medecin', medecin.hasld],
-                            queryFn: () => fetchMedecinDetails(medecin.hasld),
-                            enabled: isExpanded,
-                        });
+                        const medecinDetails = isExpanded ? expandedMedecinDetails : null;
+                        const isLoading = isExpanded ? isLoadingDetails : false;
 
                         return (
                             <div
@@ -130,7 +134,7 @@ export default function Medecins() {
                                             </p>
                                             <p>
                                                 <span className="font-medium text-gray-800 dark:text-gray-200">Hopital :</span>{' '}
-                                                {isLoading ? 'Chargement...' : medecinDetails?.hopital_id}
+                                                {isLoading ? 'Chargement...' : medecinDetails?.hopital?.nom}
                                             </p>
                                             <p>
                                                 <span className="font-medium text-gray-800 dark:text-gray-200">Status:</span>{' '}

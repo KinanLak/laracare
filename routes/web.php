@@ -83,6 +83,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Unite',
         [
             'unites' => Unite::all(),
+            'hopitals' => Hopital::all(),
         ],
     );
     })->name('Unite');
@@ -132,6 +133,7 @@ Route::middleware('auth')->group(function () {
 
     // API routes for hopitals
     Route::get('/api/hopitals/{id}/details', [HopitalController::class, 'getHopitalDetails'])->name('api.hopitals.details');
+    Route::get('/api/hopitals', [HopitalController::class, 'getHopitals'])->name('api.hopitals.list');
     Route::delete('/api/hopitals/{hopital}', [HopitalController::class, 'destroy'])->name('api.hopitals.destroy');
 
 });
